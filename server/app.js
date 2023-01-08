@@ -1,22 +1,27 @@
-const createError = require("http-errors");
-const express = require("express");
-const mongoose = require("mongoose");
+import createError from "http-errors";
+import express from "express";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import setup from "./logger/index.js";
 
 // environment variables configuration
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
 global.env = process.env.NODE_ENV || "development";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 global.LOG_DIR = __dirname + "/logs";
-const morganLogger = require("./logger/morganLogger");
-const logger = require("./logger").setup();
+const { logger, morganLogger } = setup(true);
 
 const app = express();
 app.use(morganLogger);
 app.use(express.json());
 // app.use(express.static("client/dist"));
 
-app.use("/api/sample", require("./routes/sampleRoute"));
+import deviceRoute from "./routes/deviceRoute.js";
+app.use("/api/device", deviceRoute);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(createError(404)));
@@ -79,21 +84,8 @@ const port = normalizePort(process.env.PORT || "5000");
 app.set("port", port);
 
 // Create HTTP server.
-const http = require("http");
+import http from "http";
 const server = http.createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
-
-// try to connect to mongo
-// if successful allow the server to start accepting requests
-// else log the error and terminate
-const DB_URL = "mongodb://" + process.env.DB_HOST + "/" + process.env.DB_NAME;
-mongoose.connect(DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    authSource: "admin",
-    user: process.env.DB_USER,
-    pass: process.env.DB_PASSWORD,
-}).then(() => server.listen(port)).catch(e => {
-    logger.error(e);
-});
+server.listen(port);
