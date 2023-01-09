@@ -18,7 +18,7 @@ const { logger, morganLogger } = setup(true);
 const app = express();
 app.use(morganLogger);
 app.use(express.json());
-// app.use(express.static("client/dist"));
+app.use("/assets", express.static("assets"));
 
 import deviceRoute from "./routes/deviceRoute.js";
 app.use("/api/device", deviceRoute);

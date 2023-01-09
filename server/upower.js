@@ -13,17 +13,19 @@ const determineIcon = (model, name) => {
     // TODO: expand these matches
     name = name.toLowerCase();
     if (name === "ups") {
-        return "ups_battery";
+        return "ups_battery.png";
     }
     if (name === "gaming-input") {
-        return "game_controller";
+        return "game_controller.png";
     }
     if (model.match(/keyboard/i)) {
-        return "keyboard";
+        return "keyboard.png";
     }
     if (model.match(/mouse/i)) {
-        return "mouse";
+        return "mouse.png";
     }
+
+    return "unknown.png";
 };
 
 /**
@@ -69,10 +71,10 @@ const getDeviceInfo = (deviceName) => {
                     val = val.replace(/'([^']+)'/, "$1");
                 if (key === "percentage")
                     val = parseInt(val.match(/(\d+)/)[1], 10);
-                if (val === "no")
-                    val = false;
-                if (val === "yes")
-                    val = true;
+                // if (val === "no")
+                //     val = false;
+                // if (val === "yes")
+                //     val = true;
 
                 return { key, val };
             })

@@ -1,34 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState, useEffect } from "react"
+import "./App.css"
+
+import { request } from "./hooks/Fetch";
+
+import DeviceList from "./components/DeviceList";
+import DeviceDetails from "./components/DeviceDetails";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [devices, setDevices] = useState([]);
+    const [selectedDeviceId, setSelectedDeviceId] = useState(null);
+    const [selectedDevice, setSelectedDevice] = useState(null);
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card bg-red-400">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    useEffect(() => {
+        request({ url: "/api/device/", callback: ({ msg, success, json }) => {
+            if (success) {
+                setDevices(json);
+            } else {
+                alert("An error occurred fetching devices: " + msg);
+            }
+        }});
+    }, []);
+
+    useEffect(() => {
+        if (selectedDeviceId) {
+            request({ url: "/api/device/" + selectedDeviceId, callback: ({ msg, success, json }) => {
+                if (success) {
+                    setSelectedDevice(json);
+                } else {
+                    alert("An error occurred fetching device details: " + msg);
+                }
+            }});
+        }
+    }, [selectedDeviceId]);
+
+    return (
+        <div className="p-4 bg-slate-200 h-screen flex">
+            <DeviceList devices={devices} selectDevice={setSelectedDeviceId}/>
+            { selectedDevice && <DeviceDetails device={selectedDevice}/> }
+        </div>
+    )
 }
 
 export default App
+
+// TODO: integrate these subtly into the page
+// <a target="_blank" href="https://icons8.com/icon/7314/game-controller">Game Controller</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+// <a target="_blank" href="https://icons8.com/icon/519/keyboard">Keyboard</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+// <a target="_blank" href="https://icons8.com/icon/1740/car-battery">Car Battery</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+// <a target="_blank" href="https://icons8.com/icon/F6dRlNXul9Gt/mouse">Mouse</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+// <a target="_blank" href="https://icons8.com/icon/98973/question-mark">Question Mark</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>7
