@@ -1,9 +1,9 @@
 import Battery from "./battery";
 
-const DeviceDetails = ({ device }) => {
+const DeviceDetails = ({ device, goBack }) => {
     return (
         <div className="rounded-lg shadow-md shadow-slate-400 px-4 py-2 mt-1 bg-slate-50
-            h-full w-full lg:w-2/3">
+            h-full w-full lg:w-2/3 absolute z-10 lg:static">
             <div className="flex mt-4 mb-6 items-start justify-between">
                 <div>
                     <img src={"/assets/" + device.deviceIcon} className="mr-6 w-[50px] h-[50px]"/>
@@ -12,7 +12,7 @@ const DeviceDetails = ({ device }) => {
                         <span className="font-thin text-base text-stone-700">{device.name}</span>
                     </div>
                 </div>
-                <Battery percentage={device.percentage}/>
+                <Battery percentage={device.percentage} state={device.state}/>
             </div>
             <div>{
                 Object
@@ -26,6 +26,8 @@ const DeviceDetails = ({ device }) => {
                         </div>
                     )
             }</div>
+            <button onClick={goBack}
+                className="bg-red-500 px-4 py-2 text-lg text-slate-100 rounded-md mt-4 lg:hidden">Back</button>
         </div>
     )
 }

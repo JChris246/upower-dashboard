@@ -1,6 +1,6 @@
 const useProgressColor = (percentage) => {
     const level = [0, 25, 50, 75, 100]
-    const levelColor = ["ff0000", "ff9100", "fff200", "d7fc03", "00ff00"];
+    const levelColor = ["ff0000", "ff9100", "fff200", "d7fc03", "22c55e"];
 
     const pad = (v, n=2) => {
         v = v + ""; // convert to string

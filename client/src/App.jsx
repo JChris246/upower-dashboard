@@ -33,10 +33,12 @@ function App() {
         }
     }, [selectedDeviceId]);
 
+    const hideDetails = () => setSelectedDevice(null);
+
     return (
-        <div className="p-4 bg-slate-200 h-screen flex">
+        <div className="lg:p-4 bg-slate-200 h-screen flex">
             <DeviceList devices={devices} selectDevice={setSelectedDeviceId}/>
-            { selectedDevice && <DeviceDetails device={selectedDevice}/> }
+            { selectedDevice && <DeviceDetails device={selectedDevice} goBack={hideDetails} /> }
         </div>
     )
 }
@@ -49,3 +51,4 @@ export default App
 // <a target="_blank" href="https://icons8.com/icon/1740/car-battery">Car Battery</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 // <a target="_blank" href="https://icons8.com/icon/F6dRlNXul9Gt/mouse">Mouse</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 // <a target="_blank" href="https://icons8.com/icon/98973/question-mark">Question Mark</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>7
+// <a target="_blank" href="https://icons8.com/icon/101764/quick-mode-on">Quick Mode On</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>

@@ -3,5 +3,5 @@
 }
 
 .battery_body {
-    @apply w-[160px] h-[65px] bg-stone-800 relative my-0 mx-auto border-2 border-slate-200 rounded-md flex justify-end;
+    @apply w-[160px] h-[65px] bg-stone-800 relative my-0 mx-auto border-2 border-slate-200 rounded-md flex justify-center items-center;
 }

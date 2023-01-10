@@ -9,7 +9,8 @@ const DeviceList = ({ devices, selectDevice }) => {
         )
 
     return (
-        <div className="h-full overflow-y-scroll overflow-x-hidden flex flex-col w-full lg:w-1/3 px-4 py-1">{
+        <div className="h-full overflow-y-scroll overflow-x-hidden flex flex-col w-full lg:w-1/3
+            px-2 lg:px-4 py-3 lg:py-1">{
             devices?.map(({ serial, name, model, deviceIcon, percentage }) => (
                 <div key={serial} onClick={() => selectDevice(serial)}
                     className="rounded-lg flex justify-between w-fit items-center hover:cursor-pointer

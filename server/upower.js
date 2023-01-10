@@ -67,6 +67,7 @@ const getDeviceInfo = (deviceName) => {
                 let [, key, val] = line.match(/^([^:]+):\s*(.+)$/);
 
                 key = key.replace(/[\s-]/g, "_");
+                val = val.replace(/-/g, "_");
                 if (key === "icon_name") // remove the surrounding quotes from icon name
                     val = val.replace(/'([^']+)'/, "$1");
                 if (key === "percentage")
