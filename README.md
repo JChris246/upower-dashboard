@@ -1,6 +1,6 @@
 # UPOWER DASHBOARD
 Simple Dashboard to display some of the statistics reported from upower (linux) command. Project was inspired from the need for a visual indication of the battery level of a APCES850M2 UPS and potentially auto shutdown features. The project
-was written with [React⚛](https://reactjs.org/) (js) with [vite](https://vitejs.dev/)⚡ for the frontend and nodejs with express🚀 (running with [bun](https://bun.sh/)) for the backend. 
+was written with [React⚛](https://reactjs.org/) (js) with [vite](https://vitejs.dev/)⚡ for the frontend and nodejs with express🚀 for the backend.
 
 ## 📝 Getting Started
 
@@ -29,8 +29,6 @@ bun start
 *Note: a .env file should be created and filled in with the appropriate values based on the .env.sample file.*
 
 After launching the client and the server, the application should be accessible in the browser at http://localhost:5173/
-
-*Note: The backend should also be able run with node, however it has not been tested*
 
 ## ✨ Preview
 

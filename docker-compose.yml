@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  app:
+    privileged: true # security issue
+    networks:
+      - upower-dashboard
+    image: 'upower-dashboard'
+    build: .
+    restart: unless-stopped
+    ports:
+      - 5050:5000
+    environment:
+      PORT: 5000
+
+    volumes:
+      - ./logs:/home/upower-dashboard/logs
+      - /var/run/dbus:/var/run/dbus
+
+networks:
+  upower-dashboard:

@@ -19,6 +19,7 @@ const app = express();
 app.use(morganLogger);
 app.use(express.json());
 app.use("/assets", express.static("assets"));
+app.use("/", express.static("static"));
 
 import deviceRoute from "./routes/deviceRoute.js";
 app.use("/api/device", deviceRoute);
