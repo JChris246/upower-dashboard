@@ -1,6 +1,6 @@
 # UPOWER DASHBOARD
 Simple Dashboard to display some of the statistics reported from upower (linux) command. Project was inspired from the need for a visual indication of the battery level of a APCES850M2 UPS and potentially auto shutdown features. The project
-was written with [React⚛](https://reactjs.org/) (js) with [vite](https://vitejs.dev/)⚡ for the frontend and nodejs with express🚀 for the backend.
+was written with [React⚛](https://reactjs.org/) (js) and [tailwindcss](https://tailwindcss.com/) using [vite](https://vitejs.dev/)⚡ for the frontend and nodejs with [express🚀](https://expressjs.com/) for the backend.
 
 ## 📝 Getting Started
 
@@ -13,7 +13,7 @@ cd upower-dashboard
 
 # Install server dependencies
 cd server
-bun install
+npm install
 
 # Install client dependencies
 cd client
@@ -24,7 +24,7 @@ cd client
 npm run dev
 
 cd server
-bun start
+node start
 ```
 *Note: a .env file should be created and filled in with the appropriate values based on the .env.sample file.*
 
