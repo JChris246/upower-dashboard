@@ -14,6 +14,10 @@ Dockerfile
 # production
 build/
 dist/
+static/
+
+*.service
+*.sample
 
 # misc
 **/.env

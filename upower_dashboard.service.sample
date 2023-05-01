@@ -1,0 +1,16 @@
+[Unit]
+Description=Upower Dashboard Express App
+After=network.target
+
+[Service]
+User=yourusername
+WorkingDirectory=/path/to/server/dir
+ExecStart=/usr/bin/node /path/to/server/dir/app.js
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=upower_dashboard
+
+[Install]
+WantedBy=multi-user.target

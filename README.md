@@ -67,3 +67,26 @@ After launching the client and the server, the application should be accessible 
     <br/>
     <i>Mobile view of the device detail section</i>
 </p>
+
+## 📟 Install as a systemd service
+
+A sample system template is provided at the root of the project that can be used to install the app as a systemd service to run in the background and at startup.
+
+Using the template, replace `yourusername` with the username you want to run the app as, `/path/to/server/dir` with the path to your the service folder (of this project) on your system. Save the changes and move the file to `/etc/systemd/system/`.
+
+*You will need root permissions to perform the last operation*
+
+Reload the systemd daemon by running the command: `sudo systemctl daemon-reload`.
+Start your new service by running the command: `sudo systemctl start upower_dashboard`.
+Verify that your service is running by running the command: `sudo systemctl status upower_dashboard`.
+If everything is working correctly, you should see output indicating that the service is running. You can also enable your service to start automatically at boot time by running the command: `sudo systemctl enable upower_dashboard`.
+
+*Note the frontend will need to be built with `npm run build` and the contents of the dist folder should be copied and placed in a folder `static` (which needs to be created) in the server folder.* 
+
+## 🐳 Building a docker image
+
+*Running this app as a docker container is not recommended as it requires the container to run in privileged mode, giving the container full access to the host system, including all devices and system capabilities, thereby posing a security risk*
+
+To build the docker image yourself you can use docker build -t upower-dashboard:0.1.0 . while in the root of the project. This will read and perform the actions described in the Dockerfile.
+
+Alternatively, if you have docker-compose installed there is a docker-compose.yml provided that can be used to build and run the application with the command: `docker-compose up --build -d`. *The `--build` flag is only required if changes are made and the image should be rebuilt*.
