@@ -8,10 +8,30 @@ dotenv.config();
 
 // process.env.TZ = "UTC";
 
+/**
+ * Get the next available archive number.
+ *
+ * @returns {number} The archive number.
+ */
+const getNextArchiveNumber = () => {
+    let current = 1;
+    while (fs.existsSync(global.LOG_DIR + "/combined.log." + current)) {
+        current++;
+    }
+
+    return current;
+};
+
 const setup = (isInitial=false) => {
     let logger = null;
     if (!fs.existsSync(global.LOG_DIR)) {
         fs.mkdirSync(global.LOG_DIR);
+    }
+
+    if (isInitial && fs.existsSync(global.LOG_DIR + "/combined.log")) { // archive current log files if exist
+        const archiveNumber = getNextArchiveNumber();
+        fs.renameSync(global.LOG_DIR + "/combined.log", global.LOG_DIR + "/combined.log." + archiveNumber);
+        fs.renameSync(global.LOG_DIR + "/error.log", global.LOG_DIR + "/error.log." + archiveNumber);
     }
 
     switch (process.env.NODE_ENV) {

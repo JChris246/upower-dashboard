@@ -28,4 +28,6 @@ yarn-debug.log*
 yarn-error.log*
 logs/
 
+power_log.json
+
 package-lock.json

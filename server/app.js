@@ -12,6 +12,7 @@ global.env = process.env.NODE_ENV || "development";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+global.LOG_DB = __dirname + "/db";
 global.LOG_DIR = __dirname + "/logs";
 const { logger, morganLogger } = setup(true);
 
@@ -71,13 +72,16 @@ const onError = error => {
     }
 };
 
+
+import { poll } from "./poll.js";
 /**
  * Event listener for HTTP server "listening" event.
  */
-const onListening = () => {
+const onListening = async () => {
     let addr = server.address();
     let bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     logger.info("Listening on " + bind);
+    await poll(); // really this should never return
 };
 
 // Get port from environment (or 5000) and store in Express.
