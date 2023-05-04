@@ -1,5 +1,6 @@
 import { determineIcon, getDeviceInfo, getDevices } from "../upower.js";
 import setup from "../logger/index.js";
+import { loadPowerLogFile } from "../poll.js";
 
 let logger = null;
 
@@ -48,7 +49,99 @@ const DeviceController = {
             logger.warn("Could not find device with serial: " + id);
             return res.status(404).send({ msg: "Could not find device with serial: " + id });
         }
+    },
+    getDeviceHistory: (req, res) => {
+        init();
+        const { id } = req.params;
+
+        if (!id || id.length < 1) { // do I have to handle this ?
+            logger.warn("Request was made to get device history without the id");
+            return res.status(400).send({ msg: "Invalid device id" });
+        }
+
+        const devicePowerLog = loadPowerLogFile()[id];
+        if (!devicePowerLog) {
+            logger.warn("There are no records in the database for a device with id: " + id);
+            return res.status(404).send({ msg: "No database entries for device with id: " + id });
+        }
+
+        // group the entries from the last 12 hours for use in a graph on FE
+        const now = new Date();
+        const dataSpan = 1000 * 60 * 60 * 12; // the amount of hours of history to show on graph, current 12 hours
+        const fifteenMinutes = 1000 * 60 * 15;
+        const maxMinuteRange = 12 * 60; // the amount of mins in 12 hrs
+        const startTime = (now.getTime()) - dataSpan;
+        const startIndex = getFirstEntryIndexInRange(devicePowerLog, startTime);
+
+        let expandedData = [];
+        if (devicePowerLog[startIndex]) {
+            expandedData.push(devicePowerLog[startIndex].percentage);
+        }
+
+        for (let i = startIndex + 1; i < devicePowerLog.length; i++) {
+            // fill in the data between the recorded entries
+            const diffMinutes = Math.floor((devicePowerLog[i].timestamp - devicePowerLog[i-1].timestamp) / 1000 / 60);
+            for (let j = 0; j < diffMinutes; j++) {
+                expandedData.push(devicePowerLog[i-1].percentage);
+            }
+        }
+
+        // if less than 12 hours of data, fill in data up to current time
+        if (expandedData.length < maxMinuteRange && devicePowerLog?.length > 0) {
+            const diffMinutes = Math.floor((now.getTime() - devicePowerLog[devicePowerLog.length - 1].timestamp) / 1000 / 60);
+            for (let j = 0; j < diffMinutes; j++) {
+                expandedData.push(devicePowerLog[devicePowerLog.length - 1].percentage);
+            }
+        }
+        expandedData = expandedData.slice(expandedData.length - maxMinuteRange, expandedData.length);
+
+        // group minutes into 15 min intervals
+        let grouped = [];
+        for (let i = 0; i < expandedData.length; i += 15) {
+            let sum = 0;
+            let count = 0;
+            for (let j = i; j < i + 15 && j < expandedData.length; j++, count++) {
+                sum += expandedData[j];
+            }
+            if (count === 0) {
+                logger.error("Count was unexpectedly 0");
+            } else {
+                grouped.push(Math.floor(sum / count));
+            }
+        }
+
+        // generate labels
+        let labels = [];
+        if (devicePowerLog?.length > 0) {
+            let currentTimestamp = new Date(devicePowerLog[startIndex].timestamp);
+            while (currentTimestamp.getTime() < now.getTime()) {
+                labels.push(pad(currentTimestamp.getHours(), 2) + ":" + pad(currentTimestamp.getMinutes(), 2));
+                currentTimestamp = new Date(currentTimestamp.getTime() + fifteenMinutes);
+            }
+            // ensure the number of labels are equal to the grouped data
+            labels = labels.slice(-grouped.length);
+        }
+
+        return res.status(200).send({ data: { percentage: grouped, label: labels } });
     }
+};
+
+const getFirstEntryIndexInRange = (devicePowerLog, startTime) => {
+    for (let i = devicePowerLog.length - 1; i > -1; i--) {
+        if (devicePowerLog[i].timestamp < startTime) {
+            return i;
+            // return i + 1 === devicePowerLog.length ? i : i + 1;
+        }
+    }
+    return 0;
+};
+
+const pad = (v, min) => {
+    v = v + ""; // convert to string
+    while (v.length < min) {
+        v = "0" + v;
+    }
+    return v;
 };
 
 export default DeviceController;

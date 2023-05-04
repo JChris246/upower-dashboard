@@ -25,7 +25,14 @@ const DeviceDetails = ({ device, goBack }) => {
                             <span className="font-normal">{device[key]}</span>
                         </div>
                     )
-            }</div>
+                }
+                <a type="button" href={"/stats/" + device.serial} className="py-3 px-4 inline-flex justify-center
+                    items-center gap-2 rounded-md border border-transparent font-semibold bg-indigo-500 text-white
+                    first-letter:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                    focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 hover:cursor-pointer">
+                    View History
+                </a>
+            </div>
             <button onClick={goBack}
                 className="bg-red-500 px-4 py-2 text-lg text-slate-100 rounded-md mt-4 lg:hidden">Back</button>
         </div>

@@ -79,4 +79,4 @@ const poll = async () => {
     }
 };
 
-export { poll };
+export { poll, loadPowerLogFile };
