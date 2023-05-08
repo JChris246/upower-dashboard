@@ -86,12 +86,10 @@ const DeviceController = {
             }
         }
 
-        // if less than 12 hours of data, fill in data up to current time
-        if (expandedData.length < maxMinuteRange && devicePowerLog?.length > 0) {
-            const diffMinutes = Math.floor((now.getTime() - devicePowerLog[devicePowerLog.length - 1].timestamp) / 1000 / 60);
-            for (let j = 0; j < diffMinutes; j++) {
-                expandedData.push(devicePowerLog[devicePowerLog.length - 1].percentage);
-            }
+        // fill in data up to current time
+        const diffMinutes = Math.floor((now.getTime() - devicePowerLog[devicePowerLog.length - 1].timestamp) / 1000 / 60);
+        for (let j = 0; j < diffMinutes; j++) {
+            expandedData.push(devicePowerLog[devicePowerLog.length - 1].percentage);
         }
         expandedData = expandedData.slice(expandedData.length - maxMinuteRange, expandedData.length);
 

@@ -45,9 +45,9 @@ function Stats() {
     });
 
     return (
-        <>
+        <div className="bg-stone-800 h-screen">
             <ReactChart type="line" data={mapChartData(stats)} options={chartOptions}/>
-        </>
+        </div>
     )
 }
 
