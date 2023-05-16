@@ -68,6 +68,12 @@ After launching the client and the server, the application should be accessible 
     <i>Mobile view of the device detail section</i>
 </p>
 
+<p>
+    <img src="preview/controller_history.png" width=60%>
+    <br/>
+    <i>Desktop view showing the battery level history of gaming controller device </i>
+</p>
+
 ## 📟 Install as a systemd service
 
 A sample system template is provided at the root of the project that can be used to install the app as a systemd service to run in the background and at startup.
