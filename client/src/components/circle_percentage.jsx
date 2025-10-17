@@ -1,26 +1,34 @@
 import { useProgressColor } from "../hooks/useProgressColor";
 
-const CirclePercentage = ({ percentage }) => {
-    const radius = 30;
-    const circumference = 2 * 22 / 7 * radius;
+const CirclePercentage = ({ percentage, size = "default" }) => {
+    const sizes = {
+        small: { radius: 20, width: 50, height: 50, strokeWidth: 4, fontSize: "text-xs" },
+        default: { radius: 30, width: 70, height: 70, strokeWidth: 6, fontSize: "text-sm" },
+        large: { radius: 40, width: 90, height: 90, strokeWidth: 8, fontSize: "text-base" }
+    };
 
+    const config = sizes[size];
+    const circumference = 2 * Math.PI * config.radius;
     const color = useProgressColor(percentage);
-    const offset = percentage === 100 ? "right-[52px]" : percentage > 9 ? "right-[48px]" : "right-[44px]";
 
     return (
-        <div className="flex items-center justify-center -mr-10">
-            <svg className="transform -rotate-90 w-[70px] h-[70px]">
-                <circle cx="35" cy="35" r={radius} stroke="currentColor" strokeWidth="6" fill="transparent"
-                    className="text-gray-300" />
+        <div className="relative inline-flex items-center justify-center">
+            <svg className="transform -rotate-90" width={config.width} height={config.height}>
+                {/* Background circle */}
+                <circle cx={config.width / 2} cy={config.height / 2} r={config.radius}
+                    stroke="currentColor" strokeWidth={config.strokeWidth} fill="transparent" className="text-gray-700"/>
 
-                <circle cx="35" cy="35" r={radius} stroke="currentColor" strokeWidth="6" fill="transparent"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={circumference -  percentage / 100 * circumference}
-                    style={{ color }}/>
+                {/* Progress circle */}
+                <circle cx={config.width / 2} cy={config.height / 2} r={config.radius} stroke={color} strokeWidth={config.strokeWidth}
+                    fill="transparent" strokeDasharray={circumference} strokeDashoffset={circumference - (percentage / 100) * circumference}
+                    className="transition-all duration-300 ease-in-out" strokeLinecap="round"/>
             </svg>
-            <span className={"relative text-sm font-bold " + offset} style={{ color }}>{percentage + "%"}</span>
+              {/* Percentage text */}
+            <div className={`absolute inset-0 flex items-center justify-center ${config.fontSize} font-bold`} style={{ color }}>
+                {percentage}%
+            </div>
         </div>
-    )
-}
+    );
+};
 
 export default CirclePercentage;

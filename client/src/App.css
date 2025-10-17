@@ -1,3 +1,4 @@
+/* These are no longer used */
 .battery_head {
     @apply w-[10px] h-[20px] bg-stone-800 mx-auto my-0 border-2 border-slate-200 rounded-t-[8px];
 }

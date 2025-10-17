@@ -21,6 +21,7 @@ const DeviceController = {
                         deviceIcon: determineIcon(info.model, info.name),
                         percentage: info.percentage,
                         model: info.model,
+                        state: info.state
                     };
             })
             .filter(device => device && device.serial); // filter out devices that don't have a serial id
